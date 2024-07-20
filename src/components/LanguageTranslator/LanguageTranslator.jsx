@@ -9,6 +9,7 @@ import DownloadButton from './DownloadButton';
 import swapIcon from '../../assets/icons/swap-icon.png'; // Correct path to the swap icon
 
 const LanguageTranslator = () => {
+  // State variables for input text, translated text, source and target languages, dark mode, selected file, and error messages
   const [inputText, setInputText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('so'); // Somali
@@ -19,12 +20,14 @@ const LanguageTranslator = () => {
 
   // Function to handle translation
   const handleTranslate = async () => {
+    // Check if input text is empty
     if (!inputText.trim()) {
       setError('Please enter text to translate.');
       return;
     }
     try {
       console.log('Translating text:', inputText);
+      // Make API call to translation service
       const response = await axios.post(
         process.env.REACT_APP_API_URL,
         [{ Text: inputText }],
@@ -41,6 +44,7 @@ const LanguageTranslator = () => {
         }
       );
       console.log('API response:', response.data);
+      // Check if response is as expected and set translated text
       if (response.data && response.data[0] && response.data[0].translations && response.data[0].translations[0]) {
         setTranslatedText(response.data[0].translations[0].text);
       } else {
@@ -81,7 +85,7 @@ const LanguageTranslator = () => {
     setter(value);
   };
 
-  // Function to limit the number of words
+  // Function to limit the number of words in the text
   const limitWords = (text, wordLimit) => {
     const words = text.split(' ');
     if (words.length > wordLimit) {
@@ -152,6 +156,7 @@ const LanguageTranslator = () => {
     }
   };
 
+  // Language options for the dropdowns
   const languageOptions = [
     { value: 'so', label: 'Somali' },
     { value: 'en', label: 'English' },
